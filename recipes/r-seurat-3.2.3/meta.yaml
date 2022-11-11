@@ -144,7 +144,6 @@ about:
   license_family: GPL3
   license_file:
     - '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
-    - LICENSE
 # The original CRAN metadata for this package was:
 # See
 # https://docs.conda.io/projects/conda-build for
