@@ -1,0 +1,181 @@
+{% set version = '3.2.3' %}
+{% set posix = 'm2-' if win else '' %}
+{% set native = 'm2w64-' if win else '' %}
+
+package:
+  name: r-seurat
+  version: {{ version|replace("-", "_") }}
+
+source:
+  url:     {{ cran_mirror }}/src/contrib/Archive/Seurat/Seurat_{{ version }}.tar.gz
+  sha256: 83aa48f75c3756bee23e108a8b01028366e24f237fe990cb441f3525e0613f87
+
+build:
+  merge_build_host: True  # [win]
+  # If this is a new build for the same version, increment the build number.
+  number: 0
+  # no skip
+  # This is required to make R link correctly on Linux.
+  rpaths:
+    - lib/R/lib/
+    - lib/
+# Suggests: loomR, ape, testthat, hdf5r, S4Vectors, SummarizedExperiment, SingleCellExperiment, MAST, DESeq2, BiocGenerics, GenomicRanges, GenomeInfoDb, IRanges, rtracklayer, Rfast2, monocle, Biobase, VGAM, limma, metap
+
+requirements:
+  build:
+    - {{ compiler('c') }}              # [not win]
+    - {{ compiler('m2w64_c') }}        # [win]
+    - {{ compiler('cxx') }}            # [not win]
+    - {{ compiler('m2w64_cxx') }}      # [win]
+    - {{ posix }}filesystem        # [win]
+    - {{ posix }}make
+    - {{ posix }}sed               # [win]
+    - {{ posix }}coreutils         # [win]
+    - {{ posix }}zip               # [win]
+  host:
+    - r-base
+    - r-kernsmooth
+    - r-mass
+    - r-matrix >=1.2_14
+    - r-rann
+    - r-rcolorbrewer
+    - r-rocr
+    - r-rcpp
+    - r-rcppannoy
+    - r-rcppeigen
+    - r-rcppprogress
+    - r-rtsne
+    - r-cluster
+    - r-cowplot
+    - r-fitdistrplus
+    - r-future
+    - r-future.apply
+    - r-ggplot2 >=3.3.0
+    - r-ggrepel
+    - r-ggridges
+    - r-httr
+    - r-ica
+    - r-igraph
+    - r-irlba
+    - r-jsonlite
+    - r-leiden >=0.3.1
+    - r-lmtest
+    - r-matrixstats
+    - r-miniui
+    - r-patchwork
+    - r-pbapply
+    - r-plotly >=4.9.0
+    - r-png
+    - r-reticulate
+    - r-rlang
+    - r-rsvd
+    - r-scales
+    - r-scattermore >=0.7
+    - r-sctransform >=0.3.1
+    - r-shiny
+    - r-spatstat
+    - r-tibble
+    - r-uwot >=0.1.9
+  run:
+    - r-base
+    - {{ native }}gcc-libs         # [win]
+    - r-kernsmooth
+    - r-mass
+    - r-matrix >=1.2_14
+    - r-rann
+    - r-rcolorbrewer
+    - r-rocr
+    - r-rcpp
+    - r-rcppannoy
+    - r-rcppeigen
+    - r-rcppprogress
+    - r-rtsne
+    - r-cluster
+    - r-cowplot
+    - r-fitdistrplus
+    - r-future
+    - r-future.apply
+    - r-ggplot2 >=3.3.0
+    - r-ggrepel
+    - r-ggridges
+    - r-httr
+    - r-ica
+    - r-igraph
+    - r-irlba
+    - r-jsonlite
+    - r-leiden >=0.3.1
+    - r-lmtest
+    - r-matrixstats
+    - r-miniui
+    - r-patchwork
+    - r-pbapply
+    - r-plotly >=4.9.0
+    - r-png
+    - r-reticulate
+    - r-rlang
+    - r-rsvd
+    - r-scales
+    - r-scattermore >=0.7
+    - r-sctransform >=0.3.1
+    - r-shiny
+    - r-spatstat
+    - r-tibble
+    - r-uwot >=0.1.9
+
+test:
+  commands:
+    # You can put additional test commands to be run here.
+    - $R -e "library('Seurat')"           # [not win]
+    - "\"%R%\" -e \"library('Seurat')\""  # [win]
+  # You can also put a file called run_test.py, run_test.sh, or run_test.bat
+  # in the recipe that will be run at test time.
+  # requires:
+    # Put any additional test requirements here.
+
+about:
+  home: https://satijalab.org/seurat, https://github.com/satijalab/seurat
+  license: GPL-3
+  summary: A toolkit for quality control, analysis, and exploration of single cell RNA sequencing
+    data. 'Seurat' aims to enable users to identify and interpret sources of heterogeneity
+    from single cell transcriptomic measurements, and to integrate diverse types of
+    single cell data. See Satija R, Farrell J, Gennert D, et al (2015) <doi:10.1038/nbt.3192>,
+    Macosko E, Basu A, Satija R, et al (2015) <doi:10.1016/j.cell.2015.05.002>, and
+    Stuart T, Butler A, et al (2019) <doi:10.1016/j.cell.2019.05.031> for more details.
+  license_family: GPL3
+  license_file:
+    - '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
+    - LICENSE
+# The original CRAN metadata for this package was:
+# See
+# https://docs.conda.io/projects/conda-build for
+# more information about meta.yaml
+
+extra:
+  recipe-maintainers:
+    - conda-forge/r
+    - jpdsilva
+
+# Package: Seurat
+# Version: 3.2.3
+# Date: 2020-12-14
+# Title: Tools for Single Cell Genomics
+# Description: A toolkit for quality control, analysis, and exploration of single cell RNA sequencing data. 'Seurat' aims to enable users to identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data. See Satija R, Farrell J, Gennert D, et al (2015) <doi:10.1038/nbt.3192>, Macosko E, Basu A, Satija R, et al (2015) <doi:10.1016/j.cell.2015.05.002>, and Stuart T, Butler A, et al (2019) <doi:10.1016/j.cell.2019.05.031> for more details.
+# Authors@R: c( person(given = 'Rahul', family = 'Satija', email = 'rsatija@nygenome.org', role = 'aut', comment = c(ORCID = '0000-0001-9448-8833')), person(given = 'Andrew', family = 'Butler', email = 'abutler@nygenome.org', role = 'aut', comment = c(ORCID = '0000-0003-3608-0463')), person(given = 'Paul', family = 'Hoffman', email = 'nygcSatijalab@nygenome.org', role = c('aut', 'cre'), comment = c(ORCID = '0000-0002-7693-8957')), person(given = 'Tim', family = 'Stuart', email = 'tstuart@nygenome.org', role = 'aut', comment = c(ORCID = '0000-0002-3044-0897')), person(given = 'Jeff', family = 'Farrell', email = 'jfarrell@g.harvard.edu', role = 'ctb'), person(given = 'Shiwei', family = 'Zheng', email = 'szheng@nygenome.org', role = 'ctb', comment = c(ORCID = '0000-0001-6682-6743')), person(given = 'Christoph', family = 'Hafemeister', email = 'chafemeister@nygenome.org', role = 'ctb', comment = c(ORCID = '0000-0001-6365-8254')), person(given = 'Patrick', family = 'Roelli', email = 'proelli@nygenome.org', role = 'ctb'), person(given = "Yuhan", family = "Hao", email = 'yhao@nygenome.org', role = 'ctb', comment = c(ORCID = '0000-0002-1810-0822')) )
+# URL: https://satijalab.org/seurat, https://github.com/satijalab/seurat
+# BugReports: https://github.com/satijalab/seurat/issues
+# Additional_repositories: https://mojaveazure.github.io/loomR
+# Depends: R (>= 3.6.0), methods,
+# Imports: cluster, cowplot, fitdistrplus, future, future.apply, ggplot2 (>= 3.3.0), ggrepel, ggridges, graphics, grDevices, grid, httr, ica, igraph, irlba, jsonlite, KernSmooth, leiden (>= 0.3.1), lmtest, MASS, Matrix (>= 1.2-14), matrixStats, miniUI, patchwork, pbapply, plotly (>= 4.9.0), png, RANN, RColorBrewer, Rcpp, RcppAnnoy, reticulate, rlang, ROCR, rsvd, Rtsne, scales, scattermore (>= 0.7), sctransform (>= 0.3.1), shiny, spatstat, stats, tibble, tools, utils, uwot (>= 0.1.9)
+# LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress
+# License: GPL-3 | file LICENSE
+# LazyData: true
+# Collate: 'RcppExports.R' 'generics.R' 'clustering.R' 'visualization.R' 'convenience.R' 'data.R' 'differential_expression.R' 'dimensional_reduction.R' 'integration.R' 'objects.R' 'preprocessing.R' 'tree.R' 'utilities.R' 'zzz.R'
+# RoxygenNote: 7.1.1
+# Encoding: UTF-8
+# Suggests: loomR, ape, testthat, hdf5r, S4Vectors, SummarizedExperiment, SingleCellExperiment, MAST, DESeq2, BiocGenerics, GenomicRanges, GenomeInfoDb, IRanges, rtracklayer, Rfast2, monocle, Biobase, VGAM, limma, metap
+# NeedsCompilation: yes
+# Packaged: 2020-12-14 17:51:02 UTC; paul
+# Author: Rahul Satija [aut] (<https://orcid.org/0000-0001-9448-8833>), Andrew Butler [aut] (<https://orcid.org/0000-0003-3608-0463>), Paul Hoffman [aut, cre] (<https://orcid.org/0000-0002-7693-8957>), Tim Stuart [aut] (<https://orcid.org/0000-0002-3044-0897>), Jeff Farrell [ctb], Shiwei Zheng [ctb] (<https://orcid.org/0000-0001-6682-6743>), Christoph Hafemeister [ctb] (<https://orcid.org/0000-0001-6365-8254>), Patrick Roelli [ctb], Yuhan Hao [ctb] (<https://orcid.org/0000-0002-1810-0822>)
+# Maintainer: Paul Hoffman <nygcSatijalab@nygenome.org>
+# Repository: CRAN
+# Date/Publication: 2020-12-15 10:10:05 UTC
